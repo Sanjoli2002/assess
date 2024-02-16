@@ -1,0 +1,25 @@
+[W 11:27:52.692 NotebookApp] Loading JupyterLab as a classic notebook (v6) extension.
+[I 2023-12-13 11:27:52.696 LabApp] JupyterLab extension loaded from /home/knoldus/anaconda3/lib/python3.11/site-packages/jupyterlab
+[I 2023-12-13 11:27:52.696 LabApp] JupyterLab application directory is /home/knoldus/anaconda3/share/jupyter/lab
+[I 11:27:54.174 NotebookApp] Serving notebooks from local directory: /home/knoldus
+[I 11:27:54.174 NotebookApp] Jupyter Notebook 6.5.4 is running at:
+[I 11:27:54.174 NotebookApp] http://localhost:8888/?token=1dad4ab79fef5274ff69d4e057022cdc9019018e0a839f3f
+[I 11:27:54.174 NotebookApp]  or http://127.0.0.1:8888/?token=1dad4ab79fef5274ff69d4e057022cdc9019018e0a839f3f
+[I 11:27:54.174 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 11:27:54.203 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/knoldus/.local/share/jupyter/runtime/nbserver-10458-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=1dad4ab79fef5274ff69d4e057022cdc9019018e0a839f3f
+     or http://127.0.0.1:8888/?token=1dad4ab79fef5274ff69d4e057022cdc9019018e0a839f3f
+0.00s - Debugger warning: It seems that frozen modules are being used, which may
+0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+0.00s - to python to disable frozen modules.
+0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+[W 11:28:00.156 NotebookApp] Notebook LinearRegression.ipynb is not trusted
+[I 11:28:00.349 NotebookApp] Kernel started: bf5f0382-01a5-42cb-9b34-e9ba0cbf44bc, name: python3
+0.00s - Debugger warning: It seems that frozen modules are being used, which may
+0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+0.00s - to python to disable frozen modules.
+0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.

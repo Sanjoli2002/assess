@@ -1,0 +1,4 @@
+{"time":"2023-12-11 11:44:53","level":"INFO","module":"__init__","method":"setup","line":463,"path":"\/home\/knoldus\/anaconda3\/lib\/python3.11\/site-packages\/anaconda_navigator\/widgets\/main_window\/__init__.py","message":"Initial setup"}
+{"time":"2023-12-11 11:45:03","level":"INFO","module":"__init__","method":"setup","line":479,"path":"\/home\/knoldus\/anaconda3\/lib\/python3.11\/site-packages\/anaconda_navigator\/widgets\/main_window\/__init__.py","message":"Normal setup"}
+{"time":"2023-12-12 11:21:05","level":"INFO","module":"__init__","method":"setup","line":463,"path":"\/home\/knoldus\/anaconda3\/lib\/python3.11\/site-packages\/anaconda_navigator\/widgets\/main_window\/__init__.py","message":"Initial setup"}
+{"time":"2023-12-13 11:27:40","level":"INFO","module":"__init__","method":"setup","line":463,"path":"\/home\/knoldus\/anaconda3\/lib\/python3.11\/site-packages\/anaconda_navigator\/widgets\/main_window\/__init__.py","message":"Initial setup"}

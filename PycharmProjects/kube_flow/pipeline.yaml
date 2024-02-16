@@ -1,0 +1,146 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: tabular-data-preprocessing-and-training-pipeline-
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.12, pipelines.kubeflow.org/pipeline_compilation_time: '2024-02-16T18:28:13.172771',
+    pipelines.kubeflow.org/pipeline_spec: '{"description": "A pipeline to preprocess
+      and train tabular data", "inputs": [{"name": "input_path", "type": "String"},
+      {"name": "output_path", "type": "String"}], "name": "Tabular Data Preprocessing
+      and Training Pipeline"}'}
+  labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.12}
+spec:
+  entrypoint: tabular-data-preprocessing-and-training-pipeline
+  templates:
+  - name: preprocess-op
+    container:
+      args: [--executor_input, '{{$}}', --function_to_execute, preprocess_op]
+      command:
+      - sh
+      - -c
+      - |2
+
+        if ! [ -x "$(command -v pip)" ]; then
+            python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
+        fi
+
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
+      - sh
+      - -ec
+      - |
+        program_path=$(mktemp -d)
+        printf "%s" "$0" > "$program_path/ephemeral_component.py"
+        python3 -m kfp.v2.components.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+      - |2+
+
+        import kfp
+        from kfp.v2 import dsl
+        from kfp.v2.dsl import *
+        from typing import *
+
+        def preprocess_op(input_path: str, output_path: str):
+            preprocess_data(input_path, output_path)
+
+      image: python:3.7
+    inputs:
+      artifacts:
+      - {name: input_path, path: /tmp/inputs/input_path/data}
+      - {name: output_path, path: /tmp/inputs/output_path/data}
+    metadata:
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/enable_caching: "true"
+      annotations: {pipelines.kubeflow.org/component_spec: '{"implementation": {"container":
+          {"args": ["--executor_input", {"executorInput": null}, "--function_to_execute",
+          "preprocess_op"], "command": ["sh", "-c", "\nif ! [ -x \"$(command -v pip)\"
+          ]; then\n    python3 -m ensurepip || python3 -m ensurepip --user || apt-get
+          install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip
+          install --quiet     --no-warn-script-location ''kfp==1.8.12'' && \"$0\"
+          \"$@\"\n", "sh", "-ec", "program_path=$(mktemp -d)\nprintf \"%s\" \"$0\"
+          > \"$program_path/ephemeral_component.py\"\npython3 -m kfp.v2.components.executor_main                         --component_module_path                         \"$program_path/ephemeral_component.py\"                         \"$@\"\n",
+          "\nimport kfp\nfrom kfp.v2 import dsl\nfrom kfp.v2.dsl import *\nfrom typing
+          import *\n\ndef preprocess_op(input_path: str, output_path: str):\n    preprocess_data(input_path,
+          output_path)\n\n"], "image": "python:3.7"}}, "inputs": [{"name": "input_path",
+          "type": "String"}, {"name": "output_path", "type": "String"}], "name": "Preprocess
+          op"}', pipelines.kubeflow.org/component_ref: '{}'}
+  - name: tabular-data-preprocessing-and-training-pipeline
+    inputs:
+      artifacts:
+      - {name: input_path}
+      - {name: output_path}
+    dag:
+      tasks:
+      - name: preprocess-op
+        template: preprocess-op
+        arguments:
+          artifacts:
+          - {name: input_path, from: '{{inputs.artifacts.input_path}}'}
+          - {name: output_path, from: '{{inputs.artifacts.output_path}}'}
+      - name: train-op
+        template: train-op
+        dependencies: [preprocess-op]
+        arguments:
+          artifacts:
+          - {name: output_path, from: '{{inputs.artifacts.output_path}}'}
+  - name: train-op
+    container:
+      args: [--executor_input, '{{$}}', --function_to_execute, train_op]
+      command:
+      - sh
+      - -c
+      - |2
+
+        if ! [ -x "$(command -v pip)" ]; then
+            python3 -m ensurepip || python3 -m ensurepip --user || apt-get install python3-pip
+        fi
+
+        PIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip install --quiet     --no-warn-script-location 'kfp==1.8.12' && "$0" "$@"
+      - sh
+      - -ec
+      - |
+        program_path=$(mktemp -d)
+        printf "%s" "$0" > "$program_path/ephemeral_component.py"
+        python3 -m kfp.v2.components.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+      - |2+
+
+        import kfp
+        from kfp.v2 import dsl
+        from kfp.v2.dsl import *
+        from typing import *
+
+        def train_op(input_path: str, output_path: str):
+            train_model(input_path, output_path)
+
+      image: python:3.7
+    inputs:
+      artifacts:
+      - {name: output_path, path: /tmp/inputs/input_path/data}
+      - {name: output_path, path: /tmp/inputs/output_path/data}
+    metadata:
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.12
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/enable_caching: "true"
+      annotations: {pipelines.kubeflow.org/component_spec: '{"implementation": {"container":
+          {"args": ["--executor_input", {"executorInput": null}, "--function_to_execute",
+          "train_op"], "command": ["sh", "-c", "\nif ! [ -x \"$(command -v pip)\"
+          ]; then\n    python3 -m ensurepip || python3 -m ensurepip --user || apt-get
+          install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1 python3 -m pip
+          install --quiet     --no-warn-script-location ''kfp==1.8.12'' && \"$0\"
+          \"$@\"\n", "sh", "-ec", "program_path=$(mktemp -d)\nprintf \"%s\" \"$0\"
+          > \"$program_path/ephemeral_component.py\"\npython3 -m kfp.v2.components.executor_main                         --component_module_path                         \"$program_path/ephemeral_component.py\"                         \"$@\"\n",
+          "\nimport kfp\nfrom kfp.v2 import dsl\nfrom kfp.v2.dsl import *\nfrom typing
+          import *\n\ndef train_op(input_path: str, output_path: str):\n    train_model(input_path,
+          output_path)\n\n"], "image": "python:3.7"}}, "inputs": [{"name": "input_path",
+          "type": "String"}, {"name": "output_path", "type": "String"}], "name": "Train
+          op"}', pipelines.kubeflow.org/component_ref: '{}'}
+  arguments:
+    parameters:
+    - {name: input_path}
+    - {name: output_path}
+    artifacts:
+    - name: input_path
+      raw: {data: '{{workflow.parameters.input_path}}'}
+    - name: output_path
+      raw: {data: '{{workflow.parameters.output_path}}'}
+  serviceAccountName: pipeline-runner
